@@ -1,5 +1,6 @@
 import React, {useState} from 'react'
 import { View, Text, TouchableOpacity } from 'react-native'
+import Slider from '@react-native-community/slider'
 import { getMetricMetaInfo, timeToString } from '../utils/helpers'
 import UdaciSlider from './UdaciSlider'
 import UdaciSteppers from './UdaciSteppers'
