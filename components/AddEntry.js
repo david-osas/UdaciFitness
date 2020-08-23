@@ -1,10 +1,11 @@
 import React, {useState} from 'react'
 import { View, Text, TouchableOpacity } from 'react-native'
-import Slider from '@react-native-community/slider'
+import { Ionicons } from '@expo/vector-icons'
 import { getMetricMetaInfo, timeToString } from '../utils/helpers'
 import UdaciSlider from './UdaciSlider'
 import UdaciSteppers from './UdaciSteppers'
 import DateHeader from './DateHeader'
+import TextButton from './TextButton'
 
 function SubmitBtn({onPress}){
   return(
@@ -15,7 +16,7 @@ function SubmitBtn({onPress}){
   )
 }
 
-function AddEntry(){
+function AddEntry(props){
   const initial = { run: 0, bike: 0, swim: 0, sleep: 0, eat: 0,}
   let [details, setDetails] = useState(initial)
 
@@ -56,7 +57,26 @@ function AddEntry(){
     setDetails(initial)
   }
 
+  function reset(){
+    const key = timeToString()
+  }
+
   const info = getMetricMetaInfo()
+
+  if(props.alreadyLogged){
+    return(
+      <View>
+        <Ionicons
+          name='ios-happy'
+          size= {100}
+        />
+        <Text>You already logged your information for today</Text>
+        <TextButton onPress={reset}>
+
+        </TextButton>
+      </View>
+    )
+  }
 
   return (
     <View>
