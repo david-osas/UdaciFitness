@@ -6,6 +6,7 @@ import UdaciSlider from './UdaciSlider'
 import UdaciSteppers from './UdaciSteppers'
 import DateHeader from './DateHeader'
 import TextButton from './TextButton'
+import {submitEntry, removeEntry} from '../utils/api'
 
 function SubmitBtn({onPress}){
   return(
@@ -55,10 +56,12 @@ function AddEntry(props){
     const entry = details
 
     setDetails(initial)
+    submitEntry({key, entry})
   }
 
   function reset(){
     const key = timeToString()
+    removeEntry(key)
   }
 
   const info = getMetricMetaInfo()
