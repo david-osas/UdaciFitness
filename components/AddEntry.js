@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react'
-import { View, Text, TouchableOpacity } from 'react-native'
+import { View, Text, TouchableOpacity, Platform, StyleSheet } from 'react-native'
 import { Ionicons } from '@expo/vector-icons'
 import {useDispatch, useSelector} from 'react-redux'
 import { getMetricMetaInfo, timeToString } from '../utils/helpers'
@@ -10,19 +10,19 @@ import TextButton from './TextButton'
 import {submitEntry, removeEntry} from '../utils/api'
 import {addEntry} from '../actions/index'
 import {getDailyReminderValue} from '../utils/helpers'
-import AsyncStorage from '@react-native-community/async-storage'
+import {white, purple} from '../utils/colors'
 
 function SubmitBtn({onPress}){
   return(
     <TouchableOpacity
+      style = {Platform.OS == 'ios'? styles.iosSubmitBtn: styles.androidSubmitBtn}
       onPress = {onPress}>
-      <Text>SUBMIT</Text>
+      <Text style = {styles.submitBtnText}>SUBMIT</Text>
     </TouchableOpacity>
   )
 }
 
 function AddEntry(props){
-  //AsyncStorage.clear()
   const dispatch = useDispatch()
   const state = useSelector(state => state)
   const initial = { run: 0, bike: 0, swim: 0, sleep: 0, eat: 0,}
@@ -94,13 +94,13 @@ function AddEntry(props){
 
   if(alreadyLogged){
     return(
-      <View>
+      <View style={styles.center}>
         <Ionicons
-          name='ios-happy'
+          name= {Platform.OS === 'ios'? 'ios-happy': 'md-happy'}
           size= {100}
         />
         <Text>You already logged your information for today</Text>
-        <TextButton onPress={reset}>
+        <TextButton style={{padding: 10}} onPress={reset}>
           Reset
         </TextButton>
       </View>
@@ -108,7 +108,7 @@ function AddEntry(props){
   }
 
   return (
-    <View>
+    <View style = {styles.container}>
       <DateHeader date={(new Date()).toLocaleDateString()}/>
       {
         Object.keys(info).map((key) => {
@@ -116,7 +116,7 @@ function AddEntry(props){
           const value = details[key]
 
           return(
-            <View key={key}>
+            <View key={key} style={styles.row}>
               {getIcon()}
               {type === 'slider'
                 ? <UdaciSlider
@@ -136,5 +136,49 @@ function AddEntry(props){
     </View>
   )
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    padding: 20,
+    backgroundColor: white,
+  },
+  row:{
+    flexDirection: 'row',
+    flex: 1,
+    alignItems: 'center',
+  },
+  iosSubmitBtn: {
+    backgroundColor: purple,
+    padding: 10,
+    borderRadius: 7,
+    height: 45,
+    marginLeft: 40,
+    marginRight: 40,
+  },
+  androidSubmitBtn: {
+    backgroundColor: purple,
+    padding: 10,
+    paddingLeft: 30,
+    paddingRight: 30,
+    height: 45,
+    borderRadius: 2,
+    alignSelf: 'flex-end',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  submitBtnText: {
+    color: white,
+    fontSize: 22,
+    textAlign: 'center',
+  },
+  center: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginRight: 30,
+    marginLeft: 30,
+  },
+})
 
 export default AddEntry

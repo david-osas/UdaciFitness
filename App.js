@@ -8,7 +8,7 @@ import AddEntry from './components/AddEntry'
 export default function App() {
   return (
     <Provider store={createStore(reducer)}>
-      <View>
+      <View style={{flex: 1}}>
         <AddEntry/>
       </View>
     </Provider>
